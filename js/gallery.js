@@ -64,38 +64,45 @@ const images = [
     },
   ];
   
-  const galleryList = document.querySelector("ul.gallery");
+const galleryList = document.querySelector("ul.gallery");
   
-  const marcup = images.map(({preview, original, description}) => `
-  <li class="gallery-item">
+const marcup = images.map(({preview, original, description}) => `
+<li class="gallery-item">
   <a class="gallery-link" href="${original}">
-  <img
-    class="gallery-image"
-    src="${preview}"
-    data-source="${original}"
-    alt="${description}"
-  />
+    <img
+      class="gallery-image"
+      src="${preview}"
+      data-source="${original}"
+      alt="${description}"
+    />
   </a>
-  </li>
-  `).join("");
-  
-  galleryList.insertAdjacentHTML("afterbegin", marcup);
-  console.log(galleryList);
-  
-  galleryList.addEventListener("click", galleryListImages);
-  
-  function galleryListImages (event) {
-     event.preventDefault();
-  
-     const galleryItem = event.target.closest(".gallery-item");
-     if (!galleryItem) {
-       return;
-     }
-   
-     const galleryListImagesDate = event.target.dataset.source;
-     console.log("galleryListImagesDate: ", galleryListImagesDate);
-       
+</li>
+`).join("");
+
+galleryList.insertAdjacentHTML("afterbegin", marcup);
+// console.log(marcup);
+
+galleryList.addEventListener("click", galleryImagesClick);
+
+function galleryImagesClick (event) {
+  event.preventDefault();
+
+  if(event.target.nodeName !== "IMG") {
+    return;
   }
-  
+
+  const instance = basicLightbox.create(`
+    <img src="${event.target.dataset.source}" width="800" height="600">
+`)
+
+instance.show();
+
+galleryList.addEventListener("keydown", (event) => {
+  if(event.code === "Escape") {
+    instance.close();
+    galleryList.removeEventListener("keydown", instance);
+  }
+})
+};
 
   
