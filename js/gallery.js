@@ -100,14 +100,16 @@ function galleryImagesClick (event) {
   onClose: () => {
     document.removeEventListener("keydown", handleKeyDown);
   }
-})
+});
+
 instance.show();
-};
+
 
 function handleKeyDown (event) {
-  if(event.code === "Escape") {
-  instance.close();
+   if(event.code === "Escape") {
+   instance.close();
   }
+ }
 };
 
 
